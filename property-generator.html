@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Generator (Property Listings)</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            padding: 2rem 0;
+        }
+
+        .container {
+            max-width: 900px;
+        }
+
+        .form-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: #1e293b;
+            border-bottom: 2px solid #10B981;
+            padding-bottom: 0.5rem;
+        }
+
+        #codeResult {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+            max-height: 500px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        #outputSection {
+            display: none;
+        }
+
+        .btn-generate {
+            background: #10B981;
+            border: none;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+
+        .btn-generate:hover {
+            background: #059669;
+        }
+
+        .btn-copy {
+            background: #3B82F6;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+
+        .btn-copy:hover {
+            background: #2563EB;
+        }
+
+        .label-preview {
+            background: #f1f5f9;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+
+        .label-pill {
+            display: inline-block;
+            background: #10B981;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.875rem;
+            margin: 0.25rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: #64748b;
+        }
+
+        .whatsapp-hint {
+            font-size: 0.875rem;
+            color: #64748b;
+            margin-top: 0.25rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-home"></i> HTML Generator (Property Listings)</h1>
+            <p>Generate HTML & Labels untuk posting properti di Blogger</p>
+        </div>
+
+        <form id="propertyForm">
+            <!-- Property Header -->
+            <div class="form-section">
+                <h3 class="section-title">Property Header</h3>
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <label class="form-label">Property Title *</label>
+                        <input type="text" class="form-control" id="propertyTitle"
+                            placeholder="e.g., Cluster Modern Minimalis - Jakarta Selatan" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Developer Name</label>
+                        <input type="text" class="form-control" id="developer" placeholder="e.g., ABC Properti">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Property Type *</label>
+                        <select class="form-select" id="propertyType" required>
+                            <option value="">Pilih...</option>
+                            <option value="Rumah">Rumah</option>
+                            <option value="Apartemen">Apartemen</option>
+                            <option value="Ruko">Ruko</option>
+                            <option value="Tanah">Tanah</option>
+                            <option value="Villa">Villa</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Location & Contact -->
+            <div class="form-section">
+                <h3 class="section-title">Location & Contact</h3>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Location (City/Area) *</label>
+                        <input type="text" class="form-control" id="location"
+                            placeholder="e.g., Jakarta-Selatan, Tangerang" required>
+                        <small class="text-muted">Gunakan format: Nama-Kota (pakai dash, no spasi)</small>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">WhatsApp Number *</label>
+                        <input type="text" class="form-control" id="whatsapp" placeholder="e.g., 081234567890" required>
+                        <small class="whatsapp-hint">Format: 08xxx atau 628xxx (no dash/spaces)</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Property Specs -->
+            <div class="form-section">
+                <h3 class="section-title">Property Specifications</h3>
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <label class="form-label">Kamar Tidur</label>
+                        <input type="number" class="form-control" id="kt" placeholder="3" min="0">
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label class="form-label">Kamar Mandi</label>
+                        <input type="number" class="form-control" id="km" placeholder="2" min="0">
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label class="form-label">Luas Tanah (m²)</label>
+                        <input type="number" class="form-control" id="lt" placeholder="90" min="0">
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label class="form-label">Luas Bangunan (m²)</label>
+                        <input type="number" class="form-control" id="lb" placeholder="70" min="0">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Price & Status -->
+            <div class="form-section">
+                <h3 class="section-title">Price & Status</h3>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Price (Rp) *</label>
+                        <input type="number" class="form-control" id="price" placeholder="e.g., 1500000000" required>
+                        <small class="text-muted">Tanpa titik/koma</small>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Price Range *</label>
+                        <select class="form-select" id="priceRange" required>
+                            <option value="">Pilih...</option>
+                            <option value="<500jt">&lt; 500 juta</option>
+                            <option value="500jt-1M">500 juta - 1 Miliar</option>
+                            <option value="1M-2M">1 - 2 Miliar</option>
+                            <option value="2M-5M">2 - 5 Miliar</option>
+                            <option value="5M+">5 Miliar+</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Status *</label>
+                        <select class="form-select" id="status" required>
+                            <option value="">Pilih...</option>
+                            <option value="Ready-Stock">Ready Stock</option>
+                            <option value="Pre-Order">Pre-Order</option>
+                            <option value="Sold-Out">Sold Out</option>
+                            <option value="Indent">Indent</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Project Logo URL</label>
+                        <input type="url" class="form-control" id="logoUrl" placeholder="https://i.imgur.com/logo.png">
+                        <small class="text-muted">Upload ke Imgur atau image hosting</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Facilities -->
+            <div class="form-section">
+                <h3 class="section-title">Facilities</h3>
+                <div class="row">
+                    <div class="col-md-4 mb-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="fac1" value="Security 24 jam">
+                            <label class="form-check-label" for="fac1">Security 24 jam</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="fac2" value="Swimming Pool">
+                            <label class="form-check-label" for="fac2">Swimming Pool</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="fac3" value="Gym">
+                            <label class="form-check-label" for="fac3">Gym</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="fac4" value="Playground">
+                            <label class="form-check-label" for="fac4">Playground</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="fac5" value="Carport">
+                            <label class="form-check-label" for="fac5">Carport</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="fac6" value="Taman">
+                            <label class="form-check-label" for="fac6">Taman</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Description -->
+            <div class="form-section">
+                <h3 class="section-title">Property Description *</h3>
+                <textarea class="form-control" id="description" rows="10"
+                    placeholder="**Tentang Properti**&#10;Hunian eksklusif dengan desain modern minimalis...&#10;&#10;**Lokasi Strategis:**&#10;- Dekat mall&#10;- Dekat sekolah&#10;&#10;**Informasi Lebih Lanjut:**&#10;Hubungi kami sekarang!"
+                    required></textarea>
+            </div>
+
+            <div class="text-center">
+                <button type="button" class="btn btn-primary btn-generate" onclick="generateCode()">
+                    <i class="fas fa-magic"></i> Generate Code
+                </button>
+            </div>
+        </form>
+
+        <!-- Preview Labels -->
+        <div class="form-section" id="labelPreview" style="display:none;">
+            <h3 class="section-title">Labels Preview</h3>
+            <div id="labelsPreviewContent"></div>
+        </div>
+
+        <!-- Output Section -->
+        <div class="form-section" id="outputSection">
+            <h3 class="section-title">Code Result</h3>
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle"></i> Copy code HTML ini dan paste ke Blogger dalam mode <strong>HTML
+                    view</strong>
+            </div>
+            <pre id="codeResult"></pre>
+            <button class="btn btn-success btn-copy" onclick="copyCode()">
+                <i class="fas fa-copy"></i> Copy Code
+            </button>
+            <button class="btn btn-secondary" onclick="resetForm()" style="margin-left: 1rem;">
+                <i class="fas fa-redo"></i> Reset
+            </button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Real-time preview
+        document.querySelectorAll('input, select, textarea').forEach(field => {
+            field.addEventListener('input', updateLabelPreview);
+            field.addEventListener('change', updateLabelPreview);
+        });
+
+        function updateLabelPreview() {
+            const location = document.getElementById('location').value.trim();
+            const propertyType = document.getElementById('propertyType').value;
+            const priceRange = document.getElementById('priceRange').value;
+            const status = document.getElementById('status').value;
+            const developer = document.getElementById('developer').value.trim();
+            const whatsapp = document.getElementById('whatsapp').value.trim();
+            const kt = document.getElementById('kt').value;
+            const km = document.getElementById('km').value;
+            const lt = document.getElementById('lt').value;
+            const lb = document.getElementById('lb').value;
+            const logoUrl = document.getElementById('logoUrl').value.trim();
+
+            const labels = [];
+            if (location) labels.push(`Lokasi-${location}`);
+            if (propertyType) labels.push(`Tipe-${propertyType}`);
+            if (priceRange) labels.push(`Harga-${priceRange}`);
+            if (status) labels.push(`Status-${status}`);
+            if (developer) labels.push(`Developer-${developer.replace(/\s+/g, '-')}`);
+            if (whatsapp) labels.push(`WA:${whatsapp}`);
+            if (kt || km || lt || lb) {
+                const specs = `Specs-${kt ? 'KT' + kt : ''}${km ? '-KM' + km : ''}${lt ? '-LT' + lt : ''}${lb ? '-LB' + lb : ''}`;
+                labels.push(specs.replace(/^Specs--/, 'Specs-'));
+            }
+            if (logoUrl) labels.push(`Logo:${logoUrl}`);
+
+            if (labels.length > 0) {
+                document.getElementById('labelPreview').style.display = 'block';
+                document.getElementById('labelsPreviewContent').innerHTML =
+                    '<strong>Labels yang akan di-generate:</strong><br>' +
+                    labels.map(l => `<span class="label-pill">${l}</span>`).join('');
+            } else {
+                document.getElementById('labelPreview').style.display = 'none';
+            }
+        }
+
+        function generateCode() {
+            // Validate required fields
+            const requiredFields = [
+                { id: 'propertyTitle', name: 'Property Title' },
+                { id: 'propertyType', name: 'Property Type' },
+                { id: 'location', name: 'Location' },
+                { id: 'whatsapp', name: 'WhatsApp' },
+                { id: 'price', name: 'Price' },
+                { id: 'priceRange', name: 'Price Range' },
+                { id: 'status', name: 'Status' },
+                { id: 'description', name: 'Description' }
+            ];
+
+            for (const field of requiredFields) {
+                const value = document.getElementById(field.id).value.trim();
+                if (!value) {
+                    alert(`Field ${field.name} wajib diisi!`);
+                    return;
+                }
+            }
+
+            // Get values
+            const propertyTitle = document.getElementById('propertyTitle').value.trim();
+            const developer = document.getElementById('developer').value.trim();
+            const propertyType = document.getElementById('propertyType').value;
+            const location = document.getElementById('location').value.trim();
+            const whatsapp = document.getElementById('whatsapp').value.trim();
+            const kt = document.getElementById('kt').value || '0';
+            const km = document.getElementById('km').value || '0';
+            const lt = document.getElementById('lt').value || '0';
+            const lb = document.getElementById('lb').value || '0';
+            const price = document.getElementById('price').value;
+            const priceRange = document.getElementById('priceRange').value;
+            const status = document.getElementById('status').value;
+            const logoUrl = document.getElementById('logoUrl').value.trim();
+            const description = document.getElementById('description').value.trim();
+
+            // Get facilities
+            const facilities = [];
+            for (let i = 1; i <= 6; i++) {
+                const checkbox = document.getElementById('fac' + i);
+                if (checkbox.checked) {
+                    facilities.push(checkbox.value);
+                }
+            }
+
+            // Generate HTML
+            let html = description;
+
+            // Add specs section
+            html += `\n\n**Spesifikasi:**`;
+            if (kt !== '0') html += `\n- Kamar Tidur: ${kt}`;
+            if (km !== '0') html += `\n- Kamar Mandi: ${km}`;
+            if (lt !== '0') html += `\n- Luas Tanah: ${lt} m²`;
+            if (lb !== '0') html += `\n- Luas Bangunan: ${lb} m²`;
+
+            // Add facilities
+            if (facilities.length > 0) {
+                html += `\n\n**Fasilitas:**`;
+                facilities.forEach(fac => {
+                    html += `\n- ${fac}`;
+                });
+            }
+
+            // Add price
+            const formattedPrice = formatRupiah(price);
+            html += `\n\n**Harga: ${formattedPrice}**`;
+
+            // Add location
+            const locationDisplay = location.replace(/-/g, ' ');
+            html += `\n\n**Lokasi:**\n${locationDisplay}`;
+
+            html += `\n\n**Hubungi Kami:**\nKlik tombol WhatsApp untuk info lebih lanjut!`;
+
+            // Generate Labels
+            const labels = [];
+            labels.push(`Lokasi-${location}`);
+            labels.push(`Tipe-${propertyType}`);
+            labels.push(`Harga-${priceRange}`);
+            labels.push(`Status-${status}`);
+            if (developer) labels.push(`Developer-${developer.replace(/\s+/g, '-')}`);
+            labels.push(`WA:${whatsapp}`);
+
+            // Specs label
+            let specsLabel = 'Specs-';
+            if (kt !== '0') specsLabel += `KT${kt}`;
+            if (km !== '0') specsLabel += `-KM${km}`;
+            if (lt !== '0') specsLabel += `-LT${lt}`;
+            if (lb !== '0') specsLabel += `-LB${lb}`;
+            if (specsLabel !== 'Specs-') {
+                labels.push(specsLabel.replace(/^Specs--/, 'Specs-'));
+            }
+
+            if (logoUrl) labels.push(`Logo:${logoUrl}`);
+
+            const labelsString = 'Labels:\n' + labels.join('\n');
+
+            // Final output
+            const output = html + `\n\n${'-'.repeat(50)}\n\n${labelsString}`;
+
+            // Display
+            document.getElementById('codeResult').textContent = output;
+            document.getElementById('outputSection').style.display = 'block';
+
+            // Scroll to result
+            document.getElementById('outputSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function formatRupiah(angka) {
+            const number = parseInt(angka);
+            if (number >= 1000000000) {
+                const milyar = (number / 1000000000).toFixed(1);
+                return `Rp ${milyar} Miliar`;
+            } else if (number >= 1000000) {
+                const juta = (number / 1000000).toFixed(0);
+                return `Rp ${juta} Juta`;
+            } else {
+                return `Rp ${number.toLocaleString('id-ID')}`;
+            }
+        }
+
+        function copyCode() {
+            const code = document.getElementById('codeResult').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                const btn = document.querySelector('.btn-copy');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                btn.classList.remove('btn-success');
+                btn.classList.add('btn-primary');
+
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.classList.remove('btn-primary');
+                    btn.classList.add('btn-success');
+                }, 2000);
+            }).catch(err => {
+                alert('Gagal copy. Silakan copy manual.');
+            });
+        }
+
+        function resetForm() {
+            document.getElementById('propertyForm').reset();
+            document.getElementById('outputSection').style.display = 'none';
+            document.getElementById('labelPreview').style.display = 'none';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+
+</html>
